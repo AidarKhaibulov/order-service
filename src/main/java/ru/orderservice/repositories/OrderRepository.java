@@ -20,4 +20,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("UPDATE orders o SET o.status = :status WHERE o.id = :orderId")
     void updateStatusById(OrderStatus status, long orderId);
 
+    Optional<Order> findByIdAndUserIdAndStatus(long id, long userId, OrderStatus status);
+
 }

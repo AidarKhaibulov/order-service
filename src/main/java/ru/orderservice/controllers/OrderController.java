@@ -7,16 +7,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.orderservice.dto.CancelOrderRequest;
 import ru.orderservice.dto.CancelOrderResponse;
+import ru.orderservice.dto.GetCanceledOrderRequest;
 import ru.orderservice.dto.OrderCreateRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import ru.orderservice.models.Order;
 import ru.orderservice.services.OrderService;
+
+import java.util.Optional;
 
 @CrossOrigin()
 @RestController
@@ -59,7 +59,12 @@ public class OrderController {
 
     @PostMapping("/cancel")
     public CancelOrderResponse cancelOrder(@Valid @RequestBody CancelOrderRequest request) {
-       return orderService.cancelOrder(request);
+        return orderService.cancelOrder(request);
+    }
+
+    @GetMapping("/canceled")
+    public Optional<Order> cancelOrder(@Valid @RequestBody GetCanceledOrderRequest request) {
+        return orderService.getCanceledOrder(request);
     }
 
 }
