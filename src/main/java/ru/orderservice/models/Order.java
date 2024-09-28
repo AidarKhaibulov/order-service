@@ -21,9 +21,9 @@ public class Order {
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1)
     private Long id;
 
-    @Column(name = "user_id",nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     private OrderStatus status;
 }

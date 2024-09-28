@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.orderservice.dto.CancelOrderRequest;
+import ru.orderservice.dto.CancelOrderResponse;
 import ru.orderservice.dto.OrderCreateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import ru.orderservice.services.OrderService;
@@ -54,5 +56,11 @@ public class OrderController {
     public ResponseEntity<Long> createOrder(@Valid @RequestBody OrderCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(request));
     }
+
+    @PostMapping("/cancel")
+    public CancelOrderResponse cancelOrder(@Valid @RequestBody CancelOrderRequest request) {
+       return orderService.cancelOrder(request);
+    }
+
 }
 
