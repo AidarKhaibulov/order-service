@@ -1,9 +1,29 @@
 version: '3.8'
 
 services:
-  postgres:
+  order-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: java -jar ./app.jar
+    ports:
+      - "8070:8070"
+    image: 'order-service'
+
+    depends_on:
+      order-redis:
+        condition: service_healthy
+      order-database:
+        condition: service_healthy
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://order-database:5432/order-service-base
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  order-database:
     image: postgres:latest
-    container_name: postgres
+    container_name: order-database
     ports:
       - "5432:5432"
     environment:
@@ -12,15 +32,35 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    command: postgres -p 5432
 
-  redis:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  #  order-redis:
+#    image: redis:latest
+#    container_name: order-redis
+#    ports:
+#      - "6379:6379"
+#    command: [ "redis-server", "--bind", "0.0.0.0", "--port", "6379" ]
+#    volumes:
+#      - redis-data:/data
+
+  order-redis:
+    container_name: order-redis
     image: redis:latest
-    container_name: redis
     ports:
       - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis-data:/data
+
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 2s
+      retries: 5
 
 volumes:
   postgres-data:

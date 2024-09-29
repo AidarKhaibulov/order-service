@@ -16,11 +16,11 @@ import java.util.Map;
 
 @Configuration
 public class OpenApiConfiguration {
-    @Value("${openapi.id}")
+    @Value("${openapi.id:order-service}")
     private String id;
-    @Value("${openapi.title}")
+    @Value("${openapi.title:Order service}")
     private String title;
-    @Value("${openapi.description}")
+    @Value("${openapi.description:order-service description}")
     private String description;
 
     private final BuildProperties buildProperties;

@@ -58,12 +58,12 @@ public class OrderController {
     }
 
     @PostMapping("/cancel")
-    public CancelOrderResponse cancelOrder(@Valid @RequestBody CancelOrderRequest request) {
+    public CancelOrderResponse getCanceledOrder(@Valid @RequestBody CancelOrderRequest request) {
         return orderService.cancelOrder(request);
     }
 
     @GetMapping("/canceled")
-    public Optional<Order> cancelOrder(@Valid @RequestBody GetCanceledOrderRequest request) {
+    public Optional<Order> getCanceledOrder(@Valid @RequestBody GetCanceledOrderRequest request) {
         return orderService.getCanceledOrder(request);
     }
 
