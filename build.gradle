@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.dex'
 version = '0.3.1'
-sourceCompatibility = '17'
+sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
@@ -28,8 +28,8 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // openapi
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
+    // Springdoc OpenAPI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
     // intellij
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'

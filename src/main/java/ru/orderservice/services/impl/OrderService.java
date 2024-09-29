@@ -3,7 +3,8 @@ package ru.orderservice.services.impl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.orderservice.dto.CancelOrderRequest;
 import ru.orderservice.dto.CancelOrderResponse;
@@ -12,19 +13,17 @@ import ru.orderservice.dto.OrderCreateRequest;
 import ru.orderservice.enums.OrderStatus;
 import ru.orderservice.models.Order;
 import ru.orderservice.repositories.OrderRepository;
-import ru.orderservice.services.OrderService;
+import ru.orderservice.services.IOrderService;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+@CacheConfig(cacheNames = "or")
+public class OrderService implements IOrderService {
 
     private final OrderRepository orderRepository;
-
-    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Long createOrder(@Valid OrderCreateRequest request) {
@@ -43,8 +42,6 @@ public class OrderServiceImpl implements OrderService {
         if (order.isPresent()) {
             Order o = order.get();
             orderRepository.updateStatusById(OrderStatus.CANCELED, o.getId());
-            o.setStatus(OrderStatus.CANCELED);
-            redisTemplate.opsForValue().set("cancelledOrder:" + o.getId(), o);
             return CancelOrderResponse.builder()
                     .isCanceled(true)
                     .build();
@@ -57,13 +54,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(key = "#request.orderId()")
     public Optional<Order> getCanceledOrder(GetCanceledOrderRequest request) {
-        Order orderFromCache = (Order) redisTemplate.opsForValue().get("canceledOrder:" + request.orderId());
-        if (Objects.nonNull(orderFromCache)) {
-            return Optional.of(orderFromCache);
-        } else {
-            return orderRepository.findByIdAndUserIdAndStatus(request.orderId(), request.userId(), OrderStatus.CANCELED);
-        }
+        return orderRepository.findByIdAndUserIdAndStatus(request.orderId(), request.userId(), OrderStatus.CANCELED);
     }
 
 }
+

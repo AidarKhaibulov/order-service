@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.orderservice.enums.OrderStatus;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder
@@ -15,7 +17,7 @@ import ru.orderservice.enums.OrderStatus;
 @AllArgsConstructor
 @Entity(name = "orders")
 @Table(schema = "orders")
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1)

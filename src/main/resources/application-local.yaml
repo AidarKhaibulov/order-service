@@ -1,6 +1,11 @@
 server:
   port: 8081
 
+openapi:
+  id: ${API_ID:user-service}
+  title: ${API_TITLE:User service}
+  description: ${API_DESCRIPTION:user-service description}
+
 spring:
   application:
     name: ORDER-SERVICE

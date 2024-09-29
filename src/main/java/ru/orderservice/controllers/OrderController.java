@@ -14,7 +14,7 @@ import ru.orderservice.dto.GetCanceledOrderRequest;
 import ru.orderservice.dto.OrderCreateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import ru.orderservice.models.Order;
-import ru.orderservice.services.OrderService;
+import ru.orderservice.services.IOrderService;
 
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ import java.util.Optional;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final OrderService orderService;
+    private final IOrderService orderService;
 
     @PostMapping()
     @Operation(

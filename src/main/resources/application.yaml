@@ -1,15 +1,35 @@
 server:
-  port: "${PORT:8081}"
+  port: ${APP_PORT:8070}
 
 openapi:
-  id: "${API_ID:order-service}"
-  title: "${API_TITLE:Order service}"
-  description: "${API_DESCRIPTION:order-service description}"
+  id: ${API_ID:user-service}
+  title: ${API_TITLE:User service}
+  description: ${API_DESCRIPTION:user-service description}
 
 spring:
   application:
-    name: order-service
-  jpa:
-    open-in-view: false
+    name: ORDER-SERVICE
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
   flyway:
     baseline-on-migrate: true
+
+  # Hibernate
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: order-redis
+      port: 6379
+

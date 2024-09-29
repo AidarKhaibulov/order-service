@@ -9,7 +9,7 @@ import ru.orderservice.models.Order;
 
 import java.util.Optional;
 
-public interface OrderService {
+public interface IOrderService {
 
     Long createOrder(@Valid OrderCreateRequest request);
 
