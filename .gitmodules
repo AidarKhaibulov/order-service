@@ -1,0 +1,3 @@
+[submodule "item-service"]
+	path = item-service
+	url = https://github.com/AidarKhaibulov/item-service.git
